@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Image Classifier Hub</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background-color: #f7f7f7; }
+        .container { margin-top: 50px; }
+        img { width: 300px; margin-top: 20px; border-radius: 10px; }
+        table { margin: 20px auto; border-collapse: collapse; }
+        td, th { padding: 8px 12px; border: 1px solid #ccc; }
+        .upload-box { background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); display: inline-block; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧠 Image Classifier Hub</h1>
+        <div class="upload-box">
+            <form action="/predict" method="post" enctype="multipart/form-data">
+                <input type="file" name="file" required>
+                <button type="submit">Upload & Predict</button>
+            </form>
+        </div>
+
+        {% if filename %}
+        <div>
+            <h3>Uploaded Image:</h3>
+            <img src="{{ url_for('display_image', filename=filename) }}" alt="Uploaded Image">
+        </div>
+
+        <div>
+            <h3>Predictions:</h3>
+            <table>
+                <tr><th>Class</th><th>Confidence</th></tr>
+                {% for pred in predictions %}
+                <tr><td>{{ pred.class }}</td><td>{{ '%.2f'|format(pred.confidence * 100) }}%</td></tr>
+                {% endfor %}
+            </table>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
